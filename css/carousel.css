@@ -8,13 +8,25 @@ body {
   color: #5a5a5a;
 }
 
+header{
+  height: 10%;
+}
+
+main{
+  height: 90%;
+}
+
+footer{
+  height: 10%;
+}
 
 /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
 
 /* Carousel base class */
 .carousel {
-  margin-bottom: 4rem;
+  margin-bottom: 6%;
+  height: 45%;
 }
 /* Since positioning the image, we need to help out the caption */
 .carousel-caption {
@@ -39,9 +51,12 @@ body {
   /*height: 32rem;*/
 }
 
-
 /* MARKETING CONTENT
 -------------------------------------------------- */
+
+.marketing{
+  height: 39%;
+}
 
 /* Center align the text within the three columns below the carousel */
 .marketing .col-lg-4 {
