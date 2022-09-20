@@ -1,0 +1,27 @@
+/*.caption-element{
+  display: inline-block;
+  width: 20%;
+}
+
+.city{
+  float: left;
+}
+
+.London_temp{
+  padding-top: 10%;
+}
+
+.col-icon{
+  overflow: hidden;
+}
+
+.London_icon{
+  padding-top: 0.5%;
+  top:0;
+}
+
+@media (max-width: 49em) {
+  .city-name-div{
+    display:
+  }
+}*/

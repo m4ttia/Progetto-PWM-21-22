@@ -3,9 +3,10 @@
 /* Padding below the footer and lighter body text */
 
 body {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
+  /*padding-top: 3rem;
+  padding-bottom: 3rem;*/
   color: #5a5a5a;
+  height: 100%;
 }
 
 header{
@@ -26,12 +27,20 @@ footer{
 /* Carousel base class */
 .carousel {
   margin-bottom: 6%;
-  height: 45%;
+  height: 33%;
 }
+
+.carousel-inner{
+  height: 100%;
+}
+
 /* Since positioning the image, we need to help out the caption */
 .carousel-caption {
-  bottom: 3rem;
+  margin-left: 3%;
+  margin-right: 3%;
+  bottom:0;
   z-index: 10;
+  backdrop-filter: blur(5px);
 }
 
 /* Declare heights because of positioning of img element */
@@ -43,19 +52,20 @@ footer{
   -o-background-size: cover;
   background-size: cover;
 }
-.carousel-item > img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  min-width: 100%;
-  /*height: 32rem;*/
+
+.carousel-control-prev-icon{
+  background-color: var(--bs-body-bg-alt);
+}
+
+.carousel-control-next-icon{
+  background-color: var(--bs-body-bg-alt);
 }
 
 /* MARKETING CONTENT
 -------------------------------------------------- */
 
 .marketing{
-  height: 39%;
+  height: 51%;
 }
 
 /* Center align the text within the three columns below the carousel */
@@ -93,21 +103,98 @@ footer{
 /* RESPONSIVE CSS
 -------------------------------------------------- */
 
-@media (min-width: 40em) {
+@media (max-width: 49em) {
   /* Bump up size of carousel content */
-  .carousel-caption p {
-    margin-bottom: 1.25rem;
-    font-size: 1.25rem;
+
+  .carousel-caption p{
+    font-size: 1.10rem;
+  }
+
+  .carousel-caption{
+    width: 35%;
+    backdrop-filter: none;
+    display: grid;
+  }
+
+  .city-name-div{
+    grid-column: 1/3;
+    grid-row: 1;
+  }
+
+  .city {
+    font-size: 1.40rem;
     line-height: 1.4;
+    margin-bottom: 0%;
+  }
+
+  .temp-div{
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .temp{
+    margin-bottom: 0%;
+    margin-top: 20%;
+  }
+
+  .icon-div{
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .city-btn-div{
+    grid-column: 1/3;
+    grid-row: 3;
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  .city-btn{
+    display: inline-block;
   }
 
   .featurette-heading {
     font-size: 50px;
   }
+
+  .img-cpt{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 50%;
+    width: 28%;
+  }
 }
 
-@media (min-width: 62em) {
+@media (min-width: 50em) {
   .featurette-heading {
     margin-top: 7rem;
+  }
+
+  .carousel-caption{
+    width: 20%;
+    height: 20%;
+    padding-top: 0.5rem;
+  }
+
+  .caption-element{
+    display: inline-block;
+    width: 20%;
+  }
+
+  .img-cpt{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
+    width: 56%;
+  }
+
+  .city-btn{
+    margin-bottom: 10%;
+  }
+
+  .icon{
+    margin-bottom:10%;
   }
 }
