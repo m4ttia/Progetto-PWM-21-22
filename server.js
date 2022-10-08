@@ -16,9 +16,13 @@ app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '/views/index.html'));
 });
 
-app.get('/index', function (req, res) {
+app.get('/index.html', function (req, res) {
     res.sendFile(path.join(__dirname, '/views/index.html'));
 });
+
+app.get('/city.html', function(req, res) {
+  res.sendFile(path.join(__dirname, '/views/city.html'));
+})
 
 app.listen(port);
 console.log('Server started at http://localhost:' + port);

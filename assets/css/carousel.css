@@ -21,6 +21,10 @@ footer{
   height: 10%;
 }
 
+.navbar-brand{
+  font-size: xx-large;
+}
+
 /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
 
@@ -206,6 +210,14 @@ footer{
 
   .icon{
     margin-bottom:10%;
+  }
+
+  #navbarCollapse{
+    width: 80%;
+  }
+
+  .navbar-brand{
+    width: 20%;
   }
 }
 

@@ -1,0 +1,48 @@
+.navbar-brand{
+  font-size: xx-large;
+}
+
+@media (min-width: 50em) {
+  #navbarCollapse{
+    width:80%;
+  }
+
+  .navbar-brand{
+    width: 10%;
+  }
+}
+
+#dark_label{
+  margin-left: 22%;
+  color: white;
+}
+
+body {
+  /*padding-top: 3rem;
+  padding-bottom: 3rem;*/
+  color: #5a5a5a;
+  height: 100%;
+}
+
+header{
+  height: 10%;
+}
+
+main{
+  height: 90%;
+}
+
+td img{
+  width:40%;
+  filter: drop-shadow(0 0 5px black);
+}
+
+td{
+  vertical-align: middle;
+}
+
+@media (min-width: 50em) {
+  td{
+    font-size: x-large;
+  }
+}
