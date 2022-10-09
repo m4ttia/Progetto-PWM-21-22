@@ -58,39 +58,199 @@
         <section class="py-5 text-center container">
           <h1 id="cityName" onload="setCityName()"></h1>
         </section>
-        <div class="table-responsive text-center">
-          <table id="forecastsTable" class="table table-striped align-middle">
-            <thead>
-              <tr>
-                <th>
-                  Date-Time
-                </th>
-                <th>
-                  Weather
-                </th>
-                <th>
-                  Temp.
-                </th>
-                <th>
-                  Min Temp.
-                </th>
-                <th>
-                  Max Temp.
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <!--<tr>
-                <td>xxxxxxxx</td>
-                <td>
-                  <img src="#" data-src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDg1muRNdTEpBSYCS49KPH54UAmQInKUobvw&usqp=CAU" alt="">
-                </td>
-                <td>15.01°</td>
-                <td>10°</td>
-                <td>20°</td>
-              </tr>-->
-            </tbody>
-          </table>
+
+        <div id="accordion">
+          <div class="card">
+            <div class="card-header" id="headingOne">
+              <h3 class="mb-0">
+                <a id="day1" style="text-align: center;" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+
+                </a>
+              </h3>
+            </div>
+
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+              <div class="card-body">
+                <div class="table-responsive text-center">
+                  <table id="table1" class="table table-striped align-middle">
+                    <thead>
+                      <tr>
+                        <th>
+                          Time
+                        </th>
+                        <th>
+                          Weather
+                        </th>
+                        <th>
+                          Temp.
+                        </th>
+                        <th>
+                          Min Temp.
+                        </th>
+                        <th>
+                          Max Temp.
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="headingTwo">
+              <h3 class="mb-0">
+                <a id="day2" style="text-align: center;" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+
+                </a>
+              </h3>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+              <div class="card-body">
+                <div class="table-responsive text-center">
+                  <table id="table2" class="table table-striped align-middle">
+                    <thead>
+                      <tr>
+                        <th>
+                          Time
+                        </th>
+                        <th>
+                          Weather
+                        </th>
+                        <th>
+                          Temp.
+                        </th>
+                        <th>
+                          Min Temp.
+                        </th>
+                        <th>
+                          Max Temp.
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="headingThree">
+              <h3 class="mb-0">
+                <a id="day3" style="text-align: center;" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+
+                </a>
+              </h3>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+              <div class="card-body">
+                <div class="table-responsive text-center">
+                  <table id="table3" class="table table-striped align-middle">
+                    <thead>
+                      <tr>
+                        <th>
+                          Time
+                        </th>
+                        <th>
+                          Weather
+                        </th>
+                        <th>
+                          Temp.
+                        </th>
+                        <th>
+                          Min Temp.
+                        </th>
+                        <th>
+                          Max Temp.
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="headingFour">
+              <h3 class="mb-0">
+                <a id="day4" style="text-align: center;" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+
+                </a>
+              </h3>
+            </div>
+            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+              <div class="card-body">
+                <div class="table-responsive text-center">
+                  <table id="table4" class="table table-striped align-middle">
+                    <thead>
+                      <tr>
+                        <th>
+                          Time
+                        </th>
+                        <th>
+                          Weather
+                        </th>
+                        <th>
+                          Temp.
+                        </th>
+                        <th>
+                          Min Temp.
+                        </th>
+                        <th>
+                          Max Temp.
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="headingFive">
+              <h3 class="mb-0">
+                <a id="day5" style="text-align: center;" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+
+                </a>
+              </h3>
+            </div>
+            <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+              <div class="card-body">
+                <div class="table-responsive text-center">
+                  <table id="table5" class="table table-striped align-middle">
+                    <thead>
+                      <tr>
+                        <th>
+                          Time
+                        </th>
+                        <th>
+                          Weather
+                        </th>
+                        <th>
+                          Temp.
+                        </th>
+                        <th>
+                          Min Temp.
+                        </th>
+                        <th>
+                          Max Temp.
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
     </main>
 

@@ -1,3 +1,5 @@
+var forecasts = new Array();
+
 function getCurrentWeather(city) {
   var xhr = new XMLHttpRequest();
   console.log(xhr);
@@ -18,7 +20,7 @@ function getForecasts(city) {
   xhr.send();
 }
 
-function getFormattedDayTime(date) {
+function getFormattedDay(date) {
   let time = date.getFullYear() + '/';
   if(date.getMonth() < 9){
     if(date.getDate() < 10){
@@ -33,7 +35,12 @@ function getFormattedDayTime(date) {
       time += (date.getMonth() + 1) + '/' + date.getDate();
     }
   }
-  time += ' - ';
+
+  return time;
+}
+
+function getFormattedTime(date) {
+  var time = "";
   if(Math.trunc(date.getHours() / 10) == 0)
     if(Math.trunc(date.getMinutes() / 10) == 0)
       time += '0' + date.getHours() + ':0' + date.getMinutes();
@@ -44,7 +51,6 @@ function getFormattedDayTime(date) {
         time += date.getHours() + ':0' + date.getMinutes();
       else
         time += date.getHours() + ':' + date.getMinutes();
-
   return time;
 }
 
@@ -63,7 +69,9 @@ function successCurrWeather() {
     else
       date = new Date(jsonObj.dt * 1000);
 
-  newTableElement(getFormattedDayTime(date), "http://openweathermap.org/img/wn/"+jsonObj.weather[0].icon+"@2x.png", jsonObj.main.temp, jsonObj.main.temp_min, jsonObj.main.temp_max);
+  forecasts.push({date: date, json: jsonObj});
+
+  //newTableElement(getFormattedDayTime(date), "http://openweathermap.org/img/wn/"+jsonObj.weather[0].icon+"@2x.png", jsonObj.main.temp, jsonObj.main.temp_min, jsonObj.main.temp_max);
 }
 
 function successForecasts() {
@@ -81,18 +89,20 @@ function successForecasts() {
         date = new Date((element.dt + (jsonObj.timezone - (new Date().getTimezoneOffset() * 60 * -1))) * 1000);
       else
         date = new Date(element.dt * 1000);
-
-    newTableElement(getFormattedDayTime(date),"http://openweathermap.org/img/wn/"+element.weather[0].icon+"@2x.png",element.main.temp,element.main.temp_min,element.main.temp_max);
+    forecasts.push({date: date, json: element});
+    //newTableElement(getFormattedDayTime(date),"http://openweathermap.org/img/wn/"+element.weather[0].icon+"@2x.png",element.main.temp,element.main.temp_min,element.main.temp_max);
   });
-
+  groupByDay();
 }
 
-function newTableElement(dateTime, icon, temp, minTemp, maxTemp) {
-  let table = document.getElementById('forecastsTable');
+function newTableElement(dateTime, icon, temp, minTemp, maxTemp,tableId) {
+  let button = document.getElementById('day'+tableId);
+  button.innerHTML = getFormattedDay(dateTime);
+  let table = document.getElementById('table'+tableId);
   let newRow = table.insertRow(-1);
-  let dateCell = newRow.insertCell(0);
-  let date = document.createTextNode(dateTime);
-  dateCell.appendChild(date);
+  let timeCell = newRow.insertCell(0);
+  let time = document.createTextNode(getFormattedTime(dateTime));
+  timeCell.appendChild(time);
   let iconCell = newRow.insertCell(1);
   let img = document.createElement('img');
   img.src = icon;
@@ -110,6 +120,26 @@ function newTableElement(dateTime, icon, temp, minTemp, maxTemp) {
 
 function error(err){
 	console.log('An Error:', err)
+}
+
+function groupByDay() {
+  var dailyForecasts = new Array(forecasts[0]);
+  var count = 1;
+
+  for (var i = 1; i < forecasts.length; i++) {
+    if(forecasts[i-1].date.getYear() == forecasts[i].date.getYear() && forecasts[i-1].date.getMonth() == forecasts[i].date.getMonth() && forecasts[i-1].date.getDate() == forecasts[i].date.getDate()){
+      dailyForecasts.push(forecasts[i]);
+    }else{
+      dailyForecasts.forEach((item, i) => {
+        if(count >= 2 || i == dailyForecasts.length -1)
+          newTableElement(item.date,"http://openweathermap.org/img/wn/"+item.json.weather[0].icon+"@2x.png",item.json.main.temp,"-","-",count);
+        else
+          newTableElement(item.date,"http://openweathermap.org/img/wn/"+item.json.weather[0].icon+"@2x.png",item.json.main.temp,item.json.main.temp_min,item.json.main.temp_max,count);
+      });
+      dailyForecasts = new Array(forecasts[i]);
+      count = count + 1;
+    }
+  }
 }
 
 window.addEventListener('load', (event) => {
