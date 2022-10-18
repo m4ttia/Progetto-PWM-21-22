@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="title" content="Città di ...">
+    <meta name="title" content="Città">
     <link rel="icon" type="image/x-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDg1muRNdTEpBSYCS49KPH54UAmQInKUobvw&usqp=CAU">
-    <title>Città di ...</title>
+    <title>City page</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/carousel/">
     <link rel="stylesheet" href="/css/cityPageStyle.css">
@@ -41,14 +41,15 @@
                 <a class="nav-link disabled" href="#" tabindex="-1">Disabled</a>
               </li>
             </ul>
-            <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
+            <div class="d-flex">
+              <span id="myPopup">Search by city name or combine it with its country code</span>
+              <input id="searchBar" class="form-control me-2" type="search" placeholder="Search city" aria-label="Search" autocomplete="off">
+              <button id="search" class="btn btn-outline-success">Search</button>
               <div style="margin-left: 1%;" class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
                 <label id="dark_label" style="margin-left: 22%; color: white;" class="form-check-label" for="flexSwitchCheckDefault">Enable dark mode</label>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </nav>
@@ -56,20 +57,51 @@
 
     <main>
         <section class="py-5 text-center container">
-          <h1 id="cityName" onload="setCityName()"></h1>
+          <h1 id="cityName">City</h1>
         </section>
+
+        <div class="album py-5">
+          <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+              <div class="col">
+                <div class="card">
+                  <img id="precipitations" src="#" alt="error">
+                  <div class="card-body">
+                    <p class="card-text">Precipitations maps</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card">
+                  <img id="clouds" src="#" alt="error">
+                  <div class="card-body">
+                    <p class="card-text">Clouds maps</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card">
+                  <img id="pressure" src="#" alt="error">
+                  <div class="card-body">
+                    <p class="card-text">Sea level pressure maps</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div id="accordion">
           <div class="card">
             <div class="card-header" id="headingOne">
               <h3 class="mb-0">
-                <a id="day1" style="text-align: center;" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-
+                <a id="day1" class="list-group-item list-group-item-action" role="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Date
                 </a>
               </h3>
             </div>
 
-            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
               <div class="card-body">
                 <div class="table-responsive text-center">
                   <table id="table1" class="table table-striped align-middle">
@@ -102,8 +134,8 @@
           <div class="card">
             <div class="card-header" id="headingTwo">
               <h3 class="mb-0">
-                <a id="day2" style="text-align: center;" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-
+                <a id="day2" class="list-group-item list-group-item-action" role="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                  Date
                 </a>
               </h3>
             </div>
@@ -140,8 +172,8 @@
           <div class="card">
             <div class="card-header" id="headingThree">
               <h3 class="mb-0">
-                <a id="day3" style="text-align: center;" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-
+                <a id="day3" class="list-group-item list-group-item-action" role="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                  Date
                 </a>
               </h3>
             </div>
@@ -178,8 +210,8 @@
           <div class="card">
             <div class="card-header" id="headingFour">
               <h3 class="mb-0">
-                <a id="day4" style="text-align: center;" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-
+                <a id="day4" class="list-group-item list-group-item-action" role="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                  Date
                 </a>
               </h3>
             </div>
@@ -216,8 +248,8 @@
           <div class="card">
             <div class="card-header" id="headingFive">
               <h3 class="mb-0">
-                <a id="day5" style="text-align: center;" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
-
+                <a id="day5" class="list-group-item list-group-item-action" role="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                  Date
                 </a>
               </h3>
             </div>
@@ -259,6 +291,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-dark-5@1.1.3/dist/js/darkmode.min.js"></script>
     <script src="script/scriptDarkMode.js"></script>
     <script src="script/scriptGetSearchedCity.js"></script>
+    <script src="script/scriptSearchCity.js"></script>
+    <script src="script/scriptPopupSearchBar.js"></script>
+
     <script>
 
       const ImageLoaderWorker = new Worker('http://localhost:8080/script/worker_img.js')

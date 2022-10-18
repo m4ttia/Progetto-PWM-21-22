@@ -20,6 +20,19 @@ function getForecasts(city) {
   xhr.send();
 }
 
+function getWeatherMap(lon,lat,zoom) {
+    let xtile =  Math.floor((lon+180)/360*Math.pow(2,zoom));
+    let ytile = Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,zoom));
+    let img = 'https://tile.openweathermap.org/map/precipitation/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=6cde1cd958da335a82a6079c6acd5e1d';
+    document.getElementById('precipitations').src = img;
+    img = 'https://tile.openweathermap.org/map/clouds/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=6cde1cd958da335a82a6079c6acd5e1d';
+    document.getElementById('clouds').src = img;
+    img = 'https://tile.openweathermap.org/map/precipitation/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=6cde1cd958da335a82a6079c6acd5e1d';
+    document.getElementById('precipitations').src = img;
+    img = 'https://tile.openweathermap.org/map/pressure/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=6cde1cd958da335a82a6079c6acd5e1d';
+    document.getElementById('pressure').src = img;
+}
+
 function getFormattedDay(date) {
   let time = date.getFullYear() + '/';
   if(date.getMonth() < 9){
@@ -61,17 +74,21 @@ function successCurrWeather() {
 
   console.log(jsonObj);
 
-  if((new Date().getTimezoneOffset() * 60 * -1) > jsonObj.timezone)
-    date = new Date((jsonObj.dt - ((new Date().getTimezoneOffset() * 60 * -1) - jsonObj.timezone)) * 1000);
-  else
-    if((new Date().getTimezoneOffset() * 60 * -1) < jsonObj.timezone)
-      date = new Date((jsonObj.dt + (jsonObj.timezone - (new Date().getTimezoneOffset() * 60 * -1))) * 1000);
+  if(jsonObj.cod == '200'){
+    if((new Date().getTimezoneOffset() * 60 * -1) > jsonObj.timezone)
+      date = new Date((jsonObj.dt - ((new Date().getTimezoneOffset() * 60 * -1) - jsonObj.timezone)) * 1000);
     else
-      date = new Date(jsonObj.dt * 1000);
+      if((new Date().getTimezoneOffset() * 60 * -1) < jsonObj.timezone)
+        date = new Date((jsonObj.dt + (jsonObj.timezone - (new Date().getTimezoneOffset() * 60 * -1))) * 1000);
+      else
+        date = new Date(jsonObj.dt * 1000);
 
-  forecasts.push({date: date, json: jsonObj});
-
-  //newTableElement(getFormattedDayTime(date), "http://openweathermap.org/img/wn/"+jsonObj.weather[0].icon+"@2x.png", jsonObj.main.temp, jsonObj.main.temp_min, jsonObj.main.temp_max);
+    forecasts.push({date: date, json: jsonObj});
+  } else{
+    document.getElementById('cityName').innerHTML = jsonObj.message;
+    document.getElementsByClassName('album')[0].style.visibility = 'hidden';
+    document.getElementById('accordion').style.visibility = 'hidden';
+  }
 }
 
 function successForecasts() {
@@ -118,6 +135,14 @@ function newTableElement(dateTime, icon, temp, minTemp, maxTemp,tableId) {
   tMaxCell.appendChild(tMax);
 }
 
+function successMap() {
+  var jsonObj = JSON.parse(this.responseText);
+  console.log('Ricevo:', this.status);
+	console.log('da:', this.responseURL);
+
+  console.log(jsonObj);
+}
+
 function error(err){
 	console.log('An Error:', err)
 }
@@ -126,24 +151,43 @@ function groupByDay() {
   var dailyForecasts = new Array(forecasts[0]);
   var count = 1;
 
+  document.getElementById('cityName').innerHTML += ", "+dailyForecasts[0].json.sys.country;
+
   for (var i = 1; i < forecasts.length; i++) {
     if(forecasts[i-1].date.getYear() == forecasts[i].date.getYear() && forecasts[i-1].date.getMonth() == forecasts[i].date.getMonth() && forecasts[i-1].date.getDate() == forecasts[i].date.getDate()){
       dailyForecasts.push(forecasts[i]);
     }else{
-      dailyForecasts.forEach((item, i) => {
-        if(count >= 2 || i == dailyForecasts.length -1)
+      dailyForecasts.forEach((item, j) => {
+        if(item.json.main.temp_max == item.json.main.temp_min)
           newTableElement(item.date,"http://openweathermap.org/img/wn/"+item.json.weather[0].icon+"@2x.png",item.json.main.temp,"-","-",count);
-        else
-          newTableElement(item.date,"http://openweathermap.org/img/wn/"+item.json.weather[0].icon+"@2x.png",item.json.main.temp,item.json.main.temp_min,item.json.main.temp_max,count);
+        else if(count == 1 && j > 0)
+                newTableElement(item.date,"http://openweathermap.org/img/wn/"+item.json.weather[0].icon+"@2x.png",parseFloat((item.json.main.temp_min + item.json.main.temp_max) / 2).toFixed(2),item.json.main.temp_min,item.json.main.temp_max,count);
+              else
+                newTableElement(item.date,"http://openweathermap.org/img/wn/"+item.json.weather[0].icon+"@2x.png",item.json.main.temp,item.json.main.temp_min,item.json.main.temp_max,count);
       });
       dailyForecasts = new Array(forecasts[i]);
       count = count + 1;
     }
   }
+  getWeatherMap(forecasts[0].json.coord.lon, forecasts[0].json.coord.lat, 3);
 }
 
 window.addEventListener('load', (event) => {
-  document.getElementById('cityName').innerHTML = JSON.parse(localStorage.getItem('searchedCity')).city;
-  getCurrentWeather(JSON.parse(localStorage.getItem('searchedCity')).city);
-  getForecasts(JSON.parse(localStorage.getItem('searchedCity')).city);
+  const urlParams = new URLSearchParams(window.location.search);
+  let city = urlParams.get('city');
+  let words = city.split('_');
+  if(words.length > 1){
+    city = words[0];
+    for (var i = 1; i < words.length; i++) {
+      city += ' ' + words[i];
+    }
+  }
+
+
+  console.log(city);
+
+  document.getElementsByTagName('title')[0].innerHTML = city.split(',')[0];
+  document.getElementById('cityName').innerHTML = city.split(',')[0];
+  getCurrentWeather(city);
+  getForecasts(city);
 });

@@ -59,14 +59,15 @@
                 <a class="nav-link disabled" href="#" tabindex="-1">Disabled</a>
               </li>
             </ul>
-            <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
+            <div class="d-flex">
+              <span id="myPopup">Search by city name or combine it with its country code</span>
+              <input id="searchBar" class="form-control me-2" type="search" placeholder="Search city" aria-label="Search" autocomplete="off">
+              <button id="search" class="btn btn-outline-success">Search</button>
               <div style="margin-left: 1%;" class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
                 <label id="dark_label" style="margin-left: 22%; color: white;" class="form-check-label" for="flexSwitchCheckDefault">Enable dark mode</label>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </nav>
@@ -75,11 +76,6 @@
     <main>
       <!--data-bs-interval = false serve a bloccare l'autosliding del carousel -->
       <div id="myCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval = "false">
-        <!--<div class="carousel-indicators">
-          <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-          <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-          <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>-->
         <div class="carousel-inner">
           <div class="carousel-item active">
             <img src="#" data-src="https://images.unsplash.com/photo-1483972117325-ce4920ff780b?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870" class="d-block img-fluid mx-auto" alt="Error">
@@ -100,7 +96,7 @@
                    <img id="London_icon" class="icon" src="#" alt="Error">
                  </div>
                  <div class="caption-element city-btn-div">
-                   <a class="btn btn-lg btn-primary city-btn" href="./city.html" onclick="setSearchedCity('London')">Show forecast</a>
+                   <a id="London_btn" class="btn btn-lg btn-primary city-btn" href="./city.html?city=London">Show forecast</a>
                  </div>
 	             </div>
             </div>
@@ -124,7 +120,7 @@
                    <img id="Tokyo_icon" class="icon" src="#" alt="Error">
                  </div>
                  <div class="caption-element city-btn-div">
-                   <a class="btn btn-lg btn-primary city-btn" href="#">Vai alle previsoni</a>
+                   <a id="Tokyo_btn" class="btn btn-lg btn-primary city-btn" href="./city.html?city=Tokyo">Show forecast</a>
                  </div>
 	             </div>
             </div>
@@ -148,7 +144,7 @@
                    <img id="New_York_icon" class="icon" src="#" alt="Error">
                  </div>
                  <div class="caption-element city-btn-div">
-                   <a class="btn btn-lg btn-primary city-btn" href="#">Vai alle previsoni</a>
+                   <a id="New_York_btn" class="btn btn-lg btn-primary city-btn" href="./city.html?city=New_York">Show forecast</a>
                  </div>
 	             </div>
             </div>
@@ -274,7 +270,8 @@
     </script>
     <script src="script/scriptMeteoHomePage.js"></script>
     <script src="script/scriptDarkMode.js"></script>
-    <script src="script/scriptSetSearchedCity.js"></script>
+    <script src="script/scriptSearchCity.js"></script>
+    <script src="script/scriptPopupSearchBar.js"></script>
     <script>
 
       const ImageLoaderWorker = new Worker('http://localhost:8080/script/worker_img.js')

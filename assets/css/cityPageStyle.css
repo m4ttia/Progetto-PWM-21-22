@@ -1,3 +1,8 @@
+#day1, #day2, #day3, #day4, #day5{
+  border: none;
+  text-align: center;
+}
+
 .navbar-brand{
   font-size: xx-large;
 }
@@ -9,6 +14,10 @@
 
   .navbar-brand{
     width: 10%;
+  }
+
+  td{
+    font-size: x-large;
   }
 }
 
@@ -41,8 +50,33 @@ td{
   vertical-align: middle;
 }
 
-@media (min-width: 50em) {
-  td{
-    font-size: x-large;
+@media (max-width: 50em) {
+  td img{
+    width: 50%;
   }
+}
+
+#myPopup{
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  left: 59%;
+  bottom: 1%;
+  margin-left: -80px;
+}
+
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
 }

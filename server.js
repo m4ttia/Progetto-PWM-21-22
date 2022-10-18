@@ -22,7 +22,11 @@ app.get('/index.html', function (req, res) {
 
 app.get('/city.html', function(req, res) {
   res.sendFile(path.join(__dirname, '/views/city.html'));
-})
+});
+
+app.get('/city.html/:city', function(req, res) {
+  res.sendFile(path.join(__dirname, '/views/city.html?'+req.params.city));
+});
 
 app.listen(port);
 console.log('Server started at http://localhost:' + port);
