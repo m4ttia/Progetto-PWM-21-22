@@ -6,7 +6,8 @@ function getCurrentWeather(city) {
   xhr.onload = successCurrWeather;
   xhr.onerror = error;
 
-  xhr.open('GET', 'https://api.openweathermap.org/data/2.5/weather?q='+city+'&appid=6cde1cd958da335a82a6079c6acd5e1d&units=metric');
+  // TODO: change appid
+  xhr.open('GET', 'https://api.openweathermap.org/data/2.5/weather?q='+city+'&appid=<appid>&units=metric');
   xhr.send();
 }
 
@@ -15,21 +16,25 @@ function getForecasts(city) {
   console.log(xhr);
   xhr.onload = successForecasts;
   xhr.onerror = error;
-
-  xhr.open('GET', 'https://api.openweathermap.org/data/2.5/forecast?q='+city+'&appid=6cde1cd958da335a82a6079c6acd5e1d&units=metric');
+  // TODO: change appid
+  xhr.open('GET', 'https://api.openweathermap.org/data/2.5/forecast?q='+city+'&appid=<appid>&units=metric');
   xhr.send();
 }
 
 function getWeatherMap(lon,lat,zoom) {
     let xtile =  Math.floor((lon+180)/360*Math.pow(2,zoom));
     let ytile = Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,zoom));
-    let img = 'https://tile.openweathermap.org/map/precipitation/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=6cde1cd958da335a82a6079c6acd5e1d';
+    // TODO: change appid
+    let img = 'https://tile.openweathermap.org/map/precipitation/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=<appid>';
     document.getElementById('precipitations').src = img;
-    img = 'https://tile.openweathermap.org/map/clouds/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=6cde1cd958da335a82a6079c6acd5e1d';
+    // TODO: change appid
+    img = 'https://tile.openweathermap.org/map/clouds/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=<appid>';
     document.getElementById('clouds').src = img;
-    img = 'https://tile.openweathermap.org/map/precipitation/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=6cde1cd958da335a82a6079c6acd5e1d';
+    // TODO: change appid
+    img = 'https://tile.openweathermap.org/map/precipitation/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=<appid>';
     document.getElementById('precipitations').src = img;
-    img = 'https://tile.openweathermap.org/map/pressure/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=6cde1cd958da335a82a6079c6acd5e1d';
+    // TODO: change appid
+    img = 'https://tile.openweathermap.org/map/pressure/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=<appid>';
     document.getElementById('pressure').src = img;
 }
 
