@@ -11,7 +11,6 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 //Connect to MongoDB
-// TODO: change username and password
 const dbURI = 'mongodb+srv://<username>:<password>@forecast.ceewsvj.mongodb.net/forecast?retryWrites=true&w=majority';
 mongoose.connect(dbURI,{useNewUrlParser: true, useUnifiedTopology: true})
   .then((result) =>
@@ -24,12 +23,12 @@ mongoose.connect(dbURI,{useNewUrlParser: true, useUnifiedTopology: true})
 //Express static file module
 app.use(express.static(__dirname + '/assets'));
 
-//Save user in db
-app.get('/add-user',(req,res) => {
+//Create new user in db
+app.get('/new-user',(req,res) => {
   const user = new User({
-    username: 'Mattia',
-    password: '1234',
-    cities: [{name: 'Milan', country: 'IT'}]
+    username: req.query.usr_name,
+    password: req.query.pwd,
+    cities: []
   });
 
   user.save()
@@ -54,7 +53,7 @@ app.get('/all-users', (req,res) => {
 
 //Get user by username from db
 app.get('/single-user', (req,res) => {
-  User.findOne({username: 'Mattia'})
+  User.findOne({username: req.query.usr_name})
     .then((result) => {
       res.send(result);
     })
