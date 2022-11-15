@@ -2,12 +2,13 @@ async function loginUser() {
   if(document.getElementById('login_usr_name').value != '' && document.getElementById('login_pwd').value != ''){
     const encoder = new TextEncoder();
     const data = encoder.encode(document.getElementById('login_pwd').value);
-    const hash_pwd = await crypto.subtle.digest('SHA-256', data);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer))
+    const digest = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     var xhr = new XMLHttpRequest();
     xhr.onload = login;
     xhr.onerror = error;
-
-    xhr.open('GET','http://localhost:8080/single-user-login?usr_name='+ document.getElementById('login_usr_name').value +'&pwd='+ hash_pwd,true);
+    xhr.open('GET','http://localhost:8080/login?usr_name='+ document.getElementById('login_usr_name').value +'&pwd='+ digest,true);
     xhr.send();
   }else {
     var message1 = document.createElement('div');
@@ -79,5 +80,6 @@ document.getElementById('login_button').addEventListener('click', (event) => {
     document.getElementById('login_pwd').classList.remove('is-invalid');
     document.getElementById('message_password_login').remove();
   }
+
   loginUser();
 });

@@ -60,15 +60,15 @@ async function notRegistered() {
   if(this.responseText == ''){
     var username = document.getElementById('signup_usr_name').value;
     var xhr = new XMLHttpRequest();
-    //var url = 'http://localhost:8080/new-user?';
 
     const encoder = new TextEncoder();
     const data = encoder.encode(document.getElementById('signup_pwd').value);
-    const hash_pwd = await crypto.subtle.digest('SHA-256', data);
-    //var params = 'usr_name='+ username +'&pwd='+ hash_pwd;
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer))
+    const digest = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
-    xhr.open('GET','http://localhost:8080/new-user?usr_name='+ username +'&pwd='+ hash_pwd,true);
-    //xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.open('POST','/new-user',true);
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
     xhr.onreadystatechange = function() {
       if(xhr.readyState == 4 && xhr.status == 200){
@@ -78,7 +78,7 @@ async function notRegistered() {
     }
     xhr.onerror = error;
 
-    xhr.send();
+    xhr.send('usr_name='+username+'&pwd='+digest);
   }else {
     if(document.getElementById('message_username') != undefined){
       document.getElementById('signup_usr_name').classList.remove('is-invalid');

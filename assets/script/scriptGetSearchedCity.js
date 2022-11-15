@@ -6,8 +6,7 @@ function getCurrentWeather(city) {
   xhr.onload = successCurrWeather;
   xhr.onerror = error;
 
-  // TODO: change appid
-  xhr.open('GET', 'https://api.openweathermap.org/data/2.5/weather?q='+city+'&appid=<appid>&units=metric');
+  xhr.open('GET', 'https://api.openweathermap.org/data/2.5/weather?q='+city+'&appid=6cde1cd958da335a82a6079c6acd5e1d&units=metric');
   xhr.send();
 }
 
@@ -16,25 +15,21 @@ function getForecasts(city) {
   console.log(xhr);
   xhr.onload = successForecasts;
   xhr.onerror = error;
-  // TODO: change appid
-  xhr.open('GET', 'https://api.openweathermap.org/data/2.5/forecast?q='+city+'&appid=<appid>&units=metric');
+
+  xhr.open('GET', 'https://api.openweathermap.org/data/2.5/forecast?q='+city+'&appid=6cde1cd958da335a82a6079c6acd5e1d&units=metric');
   xhr.send();
 }
 
 function getWeatherMap(lon,lat,zoom) {
     let xtile =  Math.floor((lon+180)/360*Math.pow(2,zoom));
     let ytile = Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,zoom));
-    // TODO: change appid
-    let img = 'https://tile.openweathermap.org/map/precipitation/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=<appid>';
+    let img = 'https://tile.openweathermap.org/map/precipitation/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=6cde1cd958da335a82a6079c6acd5e1d';
     document.getElementById('precipitations').src = img;
-    // TODO: change appid
-    img = 'https://tile.openweathermap.org/map/clouds/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=<appid>';
+    img = 'https://tile.openweathermap.org/map/clouds/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=6cde1cd958da335a82a6079c6acd5e1d';
     document.getElementById('clouds').src = img;
-    // TODO: change appid
-    img = 'https://tile.openweathermap.org/map/precipitation/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=<appid>';
+    img = 'https://tile.openweathermap.org/map/precipitation/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=6cde1cd958da335a82a6079c6acd5e1d';
     document.getElementById('precipitations').src = img;
-    // TODO: change appid
-    img = 'https://tile.openweathermap.org/map/pressure/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=<appid>';
+    img = 'https://tile.openweathermap.org/map/pressure/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=6cde1cd958da335a82a6079c6acd5e1d';
     document.getElementById('pressure').src = img;
 }
 
@@ -88,6 +83,8 @@ function successCurrWeather() {
       else
         date = new Date(jsonObj.dt * 1000);
 
+    console.log("Current date: " + date);
+
     forecasts.push({date: date, json: jsonObj});
   } else{
     document.getElementById('cityName').innerHTML = jsonObj.message;
@@ -104,15 +101,14 @@ function successForecasts() {
   console.log(jsonObj);
 
   jsonObj.list.forEach(element => {
-    if((new Date().getTimezoneOffset() * 60 * -1) > jsonObj.timezone)
-      date = new Date((element.dt - ((new Date().getTimezoneOffset() * 60 * -1) - jsonObj.timezone)) * 1000);
+    if((new Date().getTimezoneOffset() * 60 * -1) > jsonObj.city.timezone)
+      date = new Date((element.dt - ((new Date().getTimezoneOffset() * 60 * -1) - jsonObj.city.timezone)) * 1000);
     else
-      if((new Date().getTimezoneOffset() * 60 * -1) < jsonObj.timezone)
-        date = new Date((element.dt + (jsonObj.timezone - (new Date().getTimezoneOffset() * 60 * -1))) * 1000);
+      if((new Date().getTimezoneOffset() * 60 * -1) < jsonObj.city.timezone)
+        date = new Date((element.dt + (jsonObj.city.timezone - (new Date().getTimezoneOffset() * 60 * -1))) * 1000);
       else
         date = new Date(element.dt * 1000);
     forecasts.push({date: date, json: element});
-    //newTableElement(getFormattedDayTime(date),"http://openweathermap.org/img/wn/"+element.weather[0].icon+"@2x.png",element.main.temp,element.main.temp_min,element.main.temp_max);
   });
   groupByDay();
 }
@@ -165,15 +161,23 @@ function groupByDay() {
       dailyForecasts.forEach((item, j) => {
         if(item.json.main.temp_max == item.json.main.temp_min)
           newTableElement(item.date,"http://openweathermap.org/img/wn/"+item.json.weather[0].icon+"@2x.png",item.json.main.temp,"-","-",count);
-        else if(count == 1 && j > 0)
+        else if(item.json.main.temp_max != item.json.main.temp_min && (item.json.main.temp == item.json.main.temp_max || item.json.main.temp == item.json.main.temp_min))
                 newTableElement(item.date,"http://openweathermap.org/img/wn/"+item.json.weather[0].icon+"@2x.png",parseFloat((item.json.main.temp_min + item.json.main.temp_max) / 2).toFixed(2),item.json.main.temp_min,item.json.main.temp_max,count);
               else
                 newTableElement(item.date,"http://openweathermap.org/img/wn/"+item.json.weather[0].icon+"@2x.png",item.json.main.temp,item.json.main.temp_min,item.json.main.temp_max,count);
       });
       dailyForecasts = new Array(forecasts[i]);
+      console.log(count);
       count = count + 1;
     }
   }
+
+  while(count < 6){
+    let button = document.getElementById('day'+count);
+    button.innerHTML = 'To be defined soon';
+    count++;
+  }
+  console.log(forecasts[0].json);
   getWeatherMap(forecasts[0].json.coord.lon, forecasts[0].json.coord.lat, 3);
 }
 
