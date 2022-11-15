@@ -80,3 +80,28 @@ td{
   from {opacity: 0;}
   to {opacity:1 ;}
 }
+
+#signUpLink{
+  float: left;
+  width: 67%;
+}
+
+#favourites_link {
+  visibility: hidden;
+}
+
+#logout_link {
+  visibility: hidden;
+}
+
+#user_label {
+  margin-right: 20%;
+  color: white;
+  font-size: x-large;
+}
+
+@media (max-width: 49em) {
+  #user_label {
+    margin-bottom: 5%;
+  }
+}

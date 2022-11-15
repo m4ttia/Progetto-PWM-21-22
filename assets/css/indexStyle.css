@@ -40,8 +40,13 @@
   visibility: hidden;
 }
 
+#logout_link {
+  visibility: hidden;
+}
+
 #user_label {
-  margin-right: 20%;
+  margin-right: 15%;
+  width: auto;
   color: white;
   font-size: x-large;
 }
