@@ -62,6 +62,17 @@ app.get('/single-user', (req,res) => {
     });
 });
 
+//Get user by username and password from db
+app.get('/single-user-login', (req,res) => {
+  User.findOne({username: req.query.usr_name,password: req.query.pwd})
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 //Add city to a user
 app.get('/add-city-to-user', (req,res) => {
   User.findOne({username: 'Mattia'})
