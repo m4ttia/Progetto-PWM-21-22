@@ -11,7 +11,7 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 //Connect to MongoDB
-const dbURI = 'mongodb+srv://webAppAdmin:PwmProject21-22@forecast.ceewsvj.mongodb.net/forecast?retryWrites=true&w=majority';
+const dbURI = 'mongodb+srv://<username>:<password>@forecast.ceewsvj.mongodb.net/forecast?retryWrites=true&w=majority';
 mongoose.connect(dbURI,{useNewUrlParser: true, useUnifiedTopology: true})
   .then((result) =>
     app.listen(port),

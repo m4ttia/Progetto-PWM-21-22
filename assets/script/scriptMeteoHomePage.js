@@ -4,7 +4,7 @@ function getWeather(city) {
   xhr.onload = success;
   xhr.onerror = error;
 
-  xhr.open('GET', 'https://api.openweathermap.org/data/2.5/weather?q='+city+'&appid=6cde1cd958da335a82a6079c6acd5e1d&units=metric');
+  xhr.open('GET', 'https://api.openweathermap.org/data/2.5/weather?q='+city+'&appid=<appid>&units=metric');
   xhr.send();
 }
 
