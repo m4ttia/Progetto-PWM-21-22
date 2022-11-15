@@ -60,25 +60,40 @@ async function notRegistered() {
   if(this.responseText == ''){
     var username = document.getElementById('signup_usr_name').value;
     var xhr = new XMLHttpRequest();
-    console.log(xhr);
-    xhr.onload = success;
-    xhr.onerror = error;
+    //var url = 'http://localhost:8080/new-user?';
 
     const encoder = new TextEncoder();
     const data = encoder.encode(document.getElementById('signup_pwd').value);
     const hash_pwd = await crypto.subtle.digest('SHA-256', data);
+    //var params = 'usr_name='+ username +'&pwd='+ hash_pwd;
 
-    xhr.open('GET','http://localhost:8080/new-user?usr_name='+ username +'&pwd='+ hash_pwd);
+    xhr.open('GET','http://localhost:8080/new-user?usr_name='+ username +'&pwd='+ hash_pwd,true);
+    //xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    xhr.onreadystatechange = function() {
+      if(xhr.readyState == 4 && xhr.status == 200){
+        console.log(xhr.responseText);
+        success(xhr.responseText);
+      }
+    }
+    xhr.onerror = error;
+
     xhr.send();
   }else {
-    if(document.getElementById('message_username') != undefined)
+    if(document.getElementById('message_username') != undefined){
+      document.getElementById('signup_usr_name').classList.remove('is-invalid');
       document.getElementById('message_username').remove();
+    }
 
-    if(document.getElementById('message_password') != undefined)
+    if(document.getElementById('message_password') != undefined){
+      document.getElementById('signup_pwd').classList.remove('is-invalid');
       document.getElementById('message_password').remove();
+    }
 
-    if(document.getElementById('message_rep_password') != undefined)
+    if(document.getElementById('message_rep_password') != undefined){
+      document.getElementById('signup_repeat_pwd').classList.remove('is-invalid');
       document.getElementById('message_rep_password').remove();
+    }
 
     var message = document.createElement('div');
     var text = document.createTextNode("Username already used");
@@ -90,9 +105,16 @@ async function notRegistered() {
   }
 }
 
-function success() {
-  var jsonObj = JSON.parse(this.responseText);
+function success(res) {
+  var jsonObj = JSON.parse(res);
   console.log('User '+ jsonObj.username +' registered');
+  var current_user = {
+    user: jsonObj.username,
+    cities: jsonObj.cities,
+  };
+  localStorage.setItem('current_user',JSON.stringify(current_user));
+
+  location.reload();
 }
 
 function error(err) {
@@ -100,14 +122,20 @@ function error(err) {
 }
 
 document.getElementById('signup_button').addEventListener('click', (event) => {
-  if(document.getElementById('message_username') != undefined)
+  if(document.getElementById('message_username') != undefined){
+    document.getElementById('signup_usr_name').classList.remove('is-invalid');
     document.getElementById('message_username').remove();
+  }
 
-  if(document.getElementById('message_password') != undefined)
+  if(document.getElementById('message_password') != undefined){
+    document.getElementById('signup_pwd').classList.remove('is-invalid');
     document.getElementById('message_password').remove();
+  }
 
-  if(document.getElementById('message_rep_password') != undefined)
+  if(document.getElementById('message_rep_password') != undefined){
+    document.getElementById('signup_repeat_pwd').classList.remove('is-invalid');
     document.getElementById('message_rep_password').remove();
+  }
 
   signUpUser();
 });
