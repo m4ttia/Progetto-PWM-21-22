@@ -4,6 +4,7 @@ function logout(){
   document.getElementById('logout_link').style.visibility = 'hidden';
   document.getElementById('favourites_link').style.visibility = 'hidden';
   document.getElementById('user_label').innerHTML = '';
+  location.reload();
 }
 
 document.getElementById('logout_link').addEventListener('click', (event) => {

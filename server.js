@@ -76,13 +76,19 @@ app.post('/new-user', (req,res) => {
 });
 
 //Add city to a user
-app.get('/add-city-to-user', (req,res) => {
-  User.findOne({username: 'Mattia'})
+app.put('/add-city-to-user', (req,res) => {
+  User.findOne({username: req.body.usr_name})
     .then((result) => {
       var jsonObj = JSON.parse(JSON.stringify(result));
       let c = jsonObj.cities;
-      c.push({name: 'London', country: 'UK'});
-      User.updateOne({username: 'Mattia'}, {cities: c})
+      let s = req.body.city;
+      console.log('Storing city '+ s +' for user '+ req.body.usr_name);
+      let cityParams = s.split(', ');
+      if(cityParams.length > 1)
+        c.push({name: cityParams[0], country: cityParams[1]});
+      else
+        c.push({name: cityParams[0]});
+      User.updateOne({username: req.body.usr_name}, {cities: c})
         .then((result) => {
           res.send(result);
         })

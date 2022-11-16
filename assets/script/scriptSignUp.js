@@ -1,59 +1,59 @@
 function signUpUser() {
-  if(document.getElementById('signup_usr_name').value != '' && document.getElementById('signup_pwd').value != '' && document.getElementById('signup_repeat_pwd').value != ''){
-    if(document.getElementById('signup_pwd').value == document.getElementById('signup_repeat_pwd').value){
-      var username = document.getElementById('signup_usr_name').value;
-      var xhr = new XMLHttpRequest();
-      console.log(xhr);
+    if(document.getElementById('signup_usr_name').value != '' && document.getElementById('signup_pwd').value != '' && document.getElementById('signup_repeat_pwd').value != ''){
+      if(document.getElementById('signup_pwd').value == document.getElementById('signup_repeat_pwd').value){
+        var username = document.getElementById('signup_usr_name').value;
+        var xhr = new XMLHttpRequest();
+        console.log(xhr);
 
-      xhr.onload = notRegistered;
-      xhr.onerror = error;
-      xhr.open('GET','http://localhost:8080/single-user?usr_name='+ username);
-      xhr.send();
+        xhr.onload = notRegistered;
+        xhr.onerror = error;
+        xhr.open('GET','http://localhost:8080/single-user?usr_name='+ username);
+        xhr.send();
+      }else{
+        var message = document.createElement('div');
+        var text = document.createTextNode("Passwords not matching");
+        message.appendChild(text);
+        message.classList.add('invalid-feedback');
+        message.id = 'message_rep_password';
+        document.getElementById('signup_repeat_pwd').classList.add('is-invalid');
+        document.getElementById('rep_password_div').appendChild(message);
+      }
     }else{
-      var message = document.createElement('div');
-      var text = document.createTextNode("Passwords not matching");
-      message.appendChild(text);
-      message.classList.add('invalid-feedback');
-      message.id = 'message_rep_password';
-      document.getElementById('signup_repeat_pwd').classList.add('is-invalid');
-      document.getElementById('rep_password_div').appendChild(message);
+      var message1 = document.createElement('div');
+      var text1 = document.createTextNode("Compile the field");
+      message1.appendChild(text1);
+      message1.classList.add('invalid-feedback');
+      message1.id = 'message_username';
+
+      var message2 = document.createElement('div');
+      var text2 = document.createTextNode("Compile the field");
+      message2.appendChild(text2);
+      message2.classList.add('invalid-feedback');
+      message2.id = 'message_password';
+
+      var message3 = document.createElement('div');
+      var text3 = document.createTextNode("Compile the field");
+      message3.appendChild(text3);
+      message3.classList.add('invalid-feedback');
+      message3.id = 'message_rep_password';
+
+      if(document.getElementById('signup_usr_name').value == ''){
+        document.getElementById('signup_usr_name').classList.add('is-invalid');
+        document.getElementById('username_div').appendChild(message1);
+      }
+
+
+      if(document.getElementById('signup_pwd').value == ''){
+        document.getElementById('signup_pwd').classList.add('is-invalid');
+        document.getElementById('password_div').appendChild(message2);
+      }
+
+      if(document.getElementById('signup_repeat_pwd').value == ''){
+        document.getElementById('signup_repeat_pwd').classList.add('is-invalid');
+        document.getElementById('rep_password_div').appendChild(message3);
+      }
+
     }
-  }else{
-    var message1 = document.createElement('div');
-    var text1 = document.createTextNode("Compile the field");
-    message1.appendChild(text1);
-    message1.classList.add('invalid-feedback');
-    message1.id = 'message_username';
-
-    var message2 = document.createElement('div');
-    var text2 = document.createTextNode("Compile the field");
-    message2.appendChild(text2);
-    message2.classList.add('invalid-feedback');
-    message2.id = 'message_password';
-
-    var message3 = document.createElement('div');
-    var text3 = document.createTextNode("Compile the field");
-    message3.appendChild(text3);
-    message3.classList.add('invalid-feedback');
-    message3.id = 'message_rep_password';
-
-    if(document.getElementById('signup_usr_name').value == ''){
-      document.getElementById('signup_usr_name').classList.add('is-invalid');
-      document.getElementById('username_div').appendChild(message1);
-    }
-
-
-    if(document.getElementById('signup_pwd').value == ''){
-      document.getElementById('signup_pwd').classList.add('is-invalid');
-      document.getElementById('password_div').appendChild(message2);
-    }
-
-    if(document.getElementById('signup_repeat_pwd').value == ''){
-      document.getElementById('signup_repeat_pwd').classList.add('is-invalid');
-      document.getElementById('rep_password_div').appendChild(message3);
-    }
-
-  }
 }
 
 async function notRegistered() {
@@ -108,9 +108,20 @@ async function notRegistered() {
 function success(res) {
   var jsonObj = JSON.parse(res);
   console.log('User '+ jsonObj.username +' registered');
+  var cities = jsonObj.cities;
+  var formattedCities = new Array();
+
+  cities.forEach((item, i) => {
+    if(item.country != null){
+      formattedCities.push({name: item.name, country: item.country});
+    }else{
+      formattedCities.push({name: item.name});
+    }
+  });
+
   var current_user = {
     user: jsonObj.username,
-    cities: jsonObj.cities,
+    cities: formattedCities,
   };
   localStorage.setItem('current_user',JSON.stringify(current_user));
 

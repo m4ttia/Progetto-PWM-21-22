@@ -83,11 +83,10 @@ function successCurrWeather() {
       else
         date = new Date(jsonObj.dt * 1000);
 
-    console.log("Current date: " + date);
-
     forecasts.push({date: date, json: jsonObj});
   } else{
     document.getElementById('cityName').innerHTML = jsonObj.message;
+    document.getElementById('add_fav_link').style.visibility = 'hidden';
     document.getElementsByClassName('album')[0].style.visibility = 'hidden';
     document.getElementById('accordion').style.visibility = 'hidden';
   }
@@ -167,7 +166,6 @@ function groupByDay() {
                 newTableElement(item.date,"http://openweathermap.org/img/wn/"+item.json.weather[0].icon+"@2x.png",item.json.main.temp,item.json.main.temp_min,item.json.main.temp_max,count);
       });
       dailyForecasts = new Array(forecasts[i]);
-      console.log(count);
       count = count + 1;
     }
   }
@@ -191,9 +189,6 @@ window.addEventListener('load', (event) => {
       city += ' ' + words[i];
     }
   }
-
-
-  console.log(city);
 
   document.getElementsByTagName('title')[0].innerHTML = city.split(',')[0];
   document.getElementById('cityName').innerHTML = city.split(',')[0];

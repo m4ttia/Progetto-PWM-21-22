@@ -105,3 +105,8 @@ td{
     margin-bottom: 5%;
   }
 }
+
+#add_fav_link{
+  font-size: large;
+  visibility: hidden;
+}
