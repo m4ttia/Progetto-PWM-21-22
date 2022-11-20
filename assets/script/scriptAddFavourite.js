@@ -46,6 +46,16 @@ function addFavourite() {
         };
         localStorage.setItem('current_user',JSON.stringify(item));
       }
+
+      let length = JSON.parse(localStorage.getItem('current_user')).cities.length;
+
+      let dropdownMenu = document.getElementById('favourites');
+      var aTag = document.createElement('a');
+      aTag.setAttribute('href',"./city.html?city="+JSON.parse(localStorage.getItem('current_user')).cities[length-1].name+","+JSON.parse(localStorage.getItem('current_user')).cities[length-1].country);
+      aTag.innerText = JSON.parse(localStorage.getItem('current_user')).cities[length-1].name+", "+JSON.parse(localStorage.getItem('current_user')).cities[length-1].country;
+      aTag.setAttribute('class','dropdown-item');
+      dropdownMenu.appendChild(aTag);
+
       var xhr = new XMLHttpRequest();
 
       xhr.open('PUT','/add-city-to-user',true);
