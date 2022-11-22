@@ -101,6 +101,34 @@ app.put('/add-city-to-user', (req,res) => {
     });
 });
 
+//Add city to a user
+app.put('/rem-city-from-user', (req,res) => {
+  User.findOne({username: req.body.usr_name})
+    .then((result) => {
+      var jsonObj = JSON.parse(JSON.stringify(result));
+      let c = jsonObj.cities;
+      let s = req.body.city;
+      console.log('Removing city '+ s +' for user '+ req.body.usr_name);
+      let cityParams = s.split(', ');
+      for (var i = 0; i < c.length; i++) {
+        if(c[i].name == cityParams[0] && c[i].country == cityParams[1]){
+          c.splice(i,1);
+          break;
+        }
+      }
+      User.updateOne({username: req.body.usr_name}, {cities: c})
+        .then((result) => {
+          res.send(result);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 // webWorker
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '/views/index.html'));

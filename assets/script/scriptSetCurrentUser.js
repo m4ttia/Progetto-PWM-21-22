@@ -8,7 +8,9 @@ function setCurrentUser() {
     let dropdownMenu = document.getElementById('favourites');
     JSON.parse(current_user).cities.forEach((item, i) => {
       var line = document.createElement('ul');
-      line.setAttribute('class','dropdown-item pagination');
+      line.setAttribute('class','dropdown-item d-flex justify-content-center');
+      line.style.listStyle = 'none';
+      line.setAttribute('id','line'+item.name+''+item.country);
 
       var city = document.createElement('li');
       city.setAttribute('class','page-item');
@@ -27,6 +29,7 @@ function setCurrentUser() {
       var rem = document.createElement('a');
       rem.setAttribute('href','#');
       rem.setAttribute('class','page-link');
+      rem.setAttribute('onclick','remFavourite("'+item.name+'","'+item.country+'")');
 
       var x = document.createElement('i');
       x.setAttribute('class','bi bi-x-lg');

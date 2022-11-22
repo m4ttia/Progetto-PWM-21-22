@@ -34,7 +34,7 @@ function getWeatherMap(lon,lat,zoom) {
 }
 
 function getFormattedDay(date) {
-  let time = date.getFullYear() + '/';
+  let time = '';
   if(date.getMonth() < 9){
     if(date.getDate() < 10){
       time += '0' + (date.getMonth() + 1) + '/0' + date.getDate();
@@ -48,7 +48,7 @@ function getFormattedDay(date) {
       time += (date.getMonth() + 1) + '/' + date.getDate();
     }
   }
-
+  time += '/' + date.getFullYear();
   return time;
 }
 

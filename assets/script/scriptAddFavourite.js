@@ -1,10 +1,10 @@
 function addFavourite() {
   var current_user = localStorage.getItem('current_user');
-  if (current_user != null && JSON.parse(current_user) != null) {
+  if (current_user != null && JSON.parse(current_user) != null && JSON.parse(current_user).user == document.getElementById('user_label').innerHTML) {
     var username = JSON.parse(localStorage.getItem('current_user')).user;
     var cities = JSON.parse(localStorage.getItem('current_user')).cities;
-    let city = document.getElementById('cityName').innerHTML;
-    let cityParams = city.split(', ');
+    let c = document.getElementById('cityName').innerHTML;
+    let cityParams = c.split(', ');
     let found = false;
 
     for (var i = 0; i < cities.length; i++){
@@ -50,11 +50,39 @@ function addFavourite() {
       let length = JSON.parse(localStorage.getItem('current_user')).cities.length;
 
       let dropdownMenu = document.getElementById('favourites');
+      var line = document.createElement('ul');
+      line.setAttribute('class','dropdown-item d-flex justify-content-center');
+      line.style.listStyle = 'none';
+      line.setAttribute('id','line'+cityParams[0]+''+cityParams[1]);
+
+      var city = document.createElement('li');
+      city.setAttribute('class','page-item');
+
       var aTag = document.createElement('a');
-      aTag.setAttribute('href',"./city.html?city="+JSON.parse(localStorage.getItem('current_user')).cities[length-1].name+","+JSON.parse(localStorage.getItem('current_user')).cities[length-1].country);
-      aTag.innerText = JSON.parse(localStorage.getItem('current_user')).cities[length-1].name+", "+JSON.parse(localStorage.getItem('current_user')).cities[length-1].country;
-      aTag.setAttribute('class','dropdown-item');
-      dropdownMenu.appendChild(aTag);
+      aTag.setAttribute('href',"./city.html?city="+cityParams[0]+","+cityParams[1]);
+      aTag.innerText = cityParams[0]+", "+cityParams[1];
+      aTag.setAttribute('class','page-link');
+
+      city.appendChild(aTag);
+      line.appendChild(city);
+
+      var icon = document.createElement('li');
+      icon.setAttribute('class','page-item');
+
+      var rem = document.createElement('a');
+      rem.setAttribute('href','#');
+      rem.setAttribute('class','page-link');
+      rem.setAttribute('onclick','remFavourite("'+cityParams[0]+'","'+cityParams[1]+'")');
+
+      var x = document.createElement('i');
+      x.setAttribute('class','bi bi-x-lg');
+
+      rem.appendChild(x);
+
+      icon.appendChild(rem);
+      line.appendChild(icon);
+
+      dropdownMenu.appendChild(line);
 
       var xhr = new XMLHttpRequest();
 
@@ -63,7 +91,7 @@ function addFavourite() {
 
       xhr.onerror = error;
 
-      xhr.send('usr_name='+username+'&city='+city);
+      xhr.send('usr_name='+username+'&city='+c);
     }
   }else {
     location.reload();
