@@ -150,3 +150,24 @@ document.getElementById('signup_button').addEventListener('click', (event) => {
 
   signUpUser();
 });
+
+document.getElementById('signup_repeat_pwd').addEventListener('keypress', (event) => {
+  if(event.key == 'Enter'){
+    if(document.getElementById('message_username') != undefined){
+      document.getElementById('signup_usr_name').classList.remove('is-invalid');
+      document.getElementById('message_username').remove();
+    }
+
+    if(document.getElementById('message_password') != undefined){
+      document.getElementById('signup_pwd').classList.remove('is-invalid');
+      document.getElementById('message_password').remove();
+    }
+
+    if(document.getElementById('message_rep_password') != undefined){
+      document.getElementById('signup_repeat_pwd').classList.remove('is-invalid');
+      document.getElementById('message_rep_password').remove();
+    }
+
+    signUpUser();
+  }
+});

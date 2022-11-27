@@ -94,3 +94,19 @@ document.getElementById('login_button').addEventListener('click', (event) => {
 
   loginUser();
 });
+
+document.getElementById('login_pwd').addEventListener('keypress', (event) => {
+  if(event.key == 'Enter'){
+    if(document.getElementById('message_username_login') != undefined){
+      document.getElementById('login_usr_name').classList.remove('is-invalid');
+      document.getElementById('message_username_login').remove();
+    }
+
+    if(document.getElementById('message_password_login') != undefined){
+      document.getElementById('login_pwd').classList.remove('is-invalid');
+      document.getElementById('message_password_login').remove();
+    }
+
+    loginUser();
+  }
+});

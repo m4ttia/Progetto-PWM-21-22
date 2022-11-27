@@ -1,4 +1,4 @@
-document.getElementById('search').addEventListener('click', (event) => {
+function searchCity() {
   if(document.getElementById('searchBar').value != ''){
     let city = document.getElementById('searchBar').value;
     let words = city.split(' ');
@@ -12,5 +12,15 @@ document.getElementById('search').addEventListener('click', (event) => {
         searchedCity += words[i][j].toLowerCase();
     }
     location.replace('./city.html?city='+searchedCity);
+  }
+}
+
+document.getElementById('search').addEventListener('click', (event) => {
+  searchCity();
+});
+
+document.getElementById('searchBar').addEventListener('keypress', (event) => {
+  if(event.key == 'Enter'){
+    searchCity();
   }
 });
