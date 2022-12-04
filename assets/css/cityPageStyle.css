@@ -8,9 +8,9 @@
 }
 
 @media (min-width: 50em) {
-  #navbarCollapse{
+  /* #navbarCollapse{
     width:80%;
-  }
+  } */
 
   .navbar-brand{
     width: 10%;

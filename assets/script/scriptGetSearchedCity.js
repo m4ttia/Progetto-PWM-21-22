@@ -1,37 +1,6 @@
 var forecasts = new Array();
-
-function getCurrentWeather(city) {
-  var xhr = new XMLHttpRequest();
-  console.log(xhr);
-  xhr.onload = successCurrWeather;
-  xhr.onerror = error;
-
-  xhr.open('GET', 'https://api.openweathermap.org/data/2.5/weather?q='+city+'&appid=<appid>&units=metric');
-  xhr.send();
-}
-
-function getForecasts(city) {
-  var xhr = new XMLHttpRequest();
-  console.log(xhr);
-  xhr.onload = successForecasts;
-  xhr.onerror = error;
-
-  xhr.open('GET', 'https://api.openweathermap.org/data/2.5/forecast?q='+city+'&appid=<appid>&units=metric');
-  xhr.send();
-}
-
-function getWeatherMap(lon,lat,zoom) {
-    let xtile =  Math.floor((lon+180)/360*Math.pow(2,zoom));
-    let ytile = Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,zoom));
-    let img = 'https://tile.openweathermap.org/map/precipitation/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=<appid>';
-    document.getElementById('precipitations').src = img;
-    img = 'https://tile.openweathermap.org/map/clouds/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=<appid>';
-    document.getElementById('clouds').src = img;
-    img = 'https://tile.openweathermap.org/map/precipitation/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=<appid>';
-    document.getElementById('precipitations').src = img;
-    img = 'https://tile.openweathermap.org/map/pressure/'+zoom+'/'+xtile+'/'+ytile+'.png?appid=<appid>';
-    document.getElementById('pressure').src = img;
-}
+const CurrentWeatherWorker = new Worker('http://localhost:8080/script/worker_currWeatherCity.js');
+const ForecastsWorker = new Worker('http://localhost:8080/script/worker_Forecasts.js');
 
 function getFormattedDay(date) {
   let time = '';
@@ -67,49 +36,35 @@ function getFormattedTime(date) {
   return time;
 }
 
-function successCurrWeather() {
-  var jsonObj = JSON.parse(this.responseText);
-	console.log('Ricevo:', this.status);
-	console.log('da:', this.responseURL);
 
-  console.log(jsonObj);
-
-  if(jsonObj.cod == '200'){
-    if((new Date().getTimezoneOffset() * 60 * -1) > jsonObj.timezone)
-      date = new Date((jsonObj.dt - ((new Date().getTimezoneOffset() * 60 * -1) - jsonObj.timezone)) * 1000);
-    else
-      if((new Date().getTimezoneOffset() * 60 * -1) < jsonObj.timezone)
-        date = new Date((jsonObj.dt + (jsonObj.timezone - (new Date().getTimezoneOffset() * 60 * -1))) * 1000);
-      else
-        date = new Date(jsonObj.dt * 1000);
-
-    forecasts.push({date: date, json: jsonObj});
-  } else{
-    document.getElementById('cityName').innerHTML = jsonObj.message;
+function successCurrWeather(date, json, lon, lat, cod, message) {
+  if(cod == '200'){
+    if(forecasts.length == 0)
+      forecasts.push({date: date, json: json});
+    else{
+      forecasts.unshift({date: date, json: json});
+      groupByDay();
+    }
+  }else{
+    document.getElementById('cityName').innerHTML = message;
     document.getElementById('add_fav_link').style.visibility = 'hidden';
     document.getElementsByClassName('album')[0].style.visibility = 'hidden';
     document.getElementById('accordion').style.visibility = 'hidden';
   }
 }
 
-function successForecasts() {
-  var jsonObj = JSON.parse(this.responseText);
-  console.log('Ricevo:', this.status);
-	console.log('da:', this.responseURL);
-
-  console.log(jsonObj);
-
-  jsonObj.list.forEach(element => {
-    if((new Date().getTimezoneOffset() * 60 * -1) > jsonObj.city.timezone)
-      date = new Date((element.dt - ((new Date().getTimezoneOffset() * 60 * -1) - jsonObj.city.timezone)) * 1000);
-    else
-      if((new Date().getTimezoneOffset() * 60 * -1) < jsonObj.city.timezone)
-        date = new Date((element.dt + (jsonObj.city.timezone - (new Date().getTimezoneOffset() * 60 * -1))) * 1000);
-      else
-        date = new Date(element.dt * 1000);
-    forecasts.push({date: date, json: element});
-  });
-  groupByDay();
+function successForecasts(dates) {
+  console.log(dates);
+  if(forecasts.length == 0)
+    for (var i = 0; i < dates.length; i++) {
+      forecasts.push(dates[i]);
+    }
+  else{
+    for (var i = 0; i < dates.length; i++) {
+      forecasts.push(dates[i]);
+    }
+    groupByDay();
+  }
 }
 
 function newTableElement(dateTime, icon, temp, minTemp, maxTemp,tableId) {
@@ -176,7 +131,6 @@ function groupByDay() {
     count++;
   }
   console.log(forecasts[0].json);
-  getWeatherMap(forecasts[0].json.coord.lon, forecasts[0].json.coord.lat, 3);
 }
 
 window.addEventListener('load', (event) => {
@@ -192,6 +146,24 @@ window.addEventListener('load', (event) => {
 
   document.getElementsByTagName('title')[0].innerHTML = city.split(',')[0];
   document.getElementById('cityName').innerHTML = city.split(',')[0];
-  getCurrentWeather(city);
-  getForecasts(city);
+  CurrentWeatherWorker.postMessage(city);
+  //getCurrentWeather(city);
+  ForecastsWorker.postMessage(city);
+  //getForecasts(city);
+});
+
+CurrentWeatherWorker.addEventListener('message',(event) => {
+  const currWeatherData = event.data;
+  console.log('We got a message back!', currWeatherData);
+
+  successCurrWeather(currWeatherData.date, currWeatherData.json, currWeatherData.lon, currWeatherData.lat, currWeatherData.cod, currWeatherData.message);
+  CurrentWeatherWorker.terminate();
+});
+
+ForecastsWorker.addEventListener('message',(event) => {
+  const forecastsData = event.data;
+  console.log('We got a message back!', forecastsData);
+
+  successForecasts(forecastsData.list);
+  ForecastsWorker.terminate();
 });

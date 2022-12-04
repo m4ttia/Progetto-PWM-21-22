@@ -127,12 +127,12 @@
           <a id="add_fav_link" href="#">Add to favourites</a>
         </section>
 
-        <div class="album py-5">
+        <!-- <div class="album py-5">
           <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
               <div class="col">
                 <div class="card">
-                  <img id="precipitations" src="#" alt="error">
+                  <img class="map" id="precipitation" src="#" alt="error">
                   <div class="card-body">
                     <p class="card-text">Precipitations maps</p>
                   </div>
@@ -140,7 +140,7 @@
               </div>
               <div class="col">
                 <div class="card">
-                  <img id="clouds" src="#" alt="error">
+                  <img class="map" id="cloud" src="#" alt="error">
                   <div class="card-body">
                     <p class="card-text">Clouds maps</p>
                   </div>
@@ -148,7 +148,7 @@
               </div>
               <div class="col">
                 <div class="card">
-                  <img id="pressure" src="#" alt="error">
+                  <img class="map" id="pressure" src="#" alt="error">
                   <div class="card-body">
                     <p class="card-text">Sea level pressure maps</p>
                   </div>
@@ -156,7 +156,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <div id="accordion">
           <div class="card">
@@ -368,37 +368,35 @@
     <script src="script/scriptAddFavourite.js"></script>
     <script src="script/scriptSyncrUser.js"></script>
     <script src="script/scriptRemFavourite.js"></script>
-    <script>
+    <!-- <script type="text/javascript">
+      const MapsLoaderWorker = new Worker('http://localhost:8080/script/worker_Map.js');
 
-      const ImageLoaderWorker = new Worker('http://localhost:8080/script/worker_img.js')
+      const imgElements = document.getElementsByClassName('map');
 
-      const imgElements = document.querySelectorAll('img[data-src]')
+      const urlParams = new URLSearchParams(window.location.search);
+      let city = urlParams.get('city');
+      let words = city.split('_');
+      if(words.length > 1){
+        city = words[0];
+        for (var i = 1; i < words.length; i++) {
+          city += ' ' + words[i];
+        }
+      }
 
-      const iconTag = document.querySelectorAll("meta[type='image/x-icon']");
+      imgElements.foreach(element => {
+        const id = element.id;
+        MapsLoaderWorker.postMessage({
+          id: id,
+          city: city
+        });
+      });
 
-      ImageLoaderWorker.addEventListener('message', event => {
-          // Grab the message data from the event
-          const imageData = event.data
-
-          console.log('We got a message back!', imageData)
-
-          const imageElement = document.querySelector(`img[data-src='${imageData.imageURL}']`)
-
-          const objectURL = URL.createObjectURL(imageData.blob)
-
-          imageElement.setAttribute('src', objectURL)
-          imageElement.removeAttribute('data-src')
-      })
-
-      iconTag.forEach(target => {
-        const imgUrl = imageElement.getAttribute('href')
-        ImageLoaderWorker.postMessage(imgUrl)
-      })
-
-      imgElements.forEach(imageElement => {
-          const imageURL = imageElement.getAttribute('data-src')
-          ImageLoaderWorker.postMessage(imageURL)
-      })
-    </script>
+      MapsLoaderWorker.addEventListener('message', (event) => {
+        const mapData = event.data;
+        console.log('We got a message back!', mapData);
+        const mapElement = document.getElementById(mapData.id);
+        mapElement.setAttribute('src',mapData.blob);
+      });
+    </script> -->
   </body>
 </html>
